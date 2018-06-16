@@ -64,7 +64,13 @@ public class DataChangeQueueReceiver {
     	} else if("product_property".equals(dataType)) {
     		processProductPropertyDataChangeMessage(jsonObject);
      	} else if("product".equals(dataType)) {
-     		processProductDataChangeMessage(jsonObject); 
+    		try{
+				processProductDataChangeMessage(jsonObject);
+			}catch(RuntimeException e){
+				System.out.println("出现了运行时异常，我这里就吃下去了");
+				e.printStackTrace();
+			}
+
      	} else if("product_specification".equals(dataType)) {
      		processProductSpecificationDataChangeMessage(jsonObject);  
      	}
