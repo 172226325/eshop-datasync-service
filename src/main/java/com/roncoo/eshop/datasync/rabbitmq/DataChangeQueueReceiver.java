@@ -149,11 +149,16 @@ public class DataChangeQueueReceiver {
     }
     
     private void processProductDataChangeMessage(JSONObject messageJSONObject) {
-    	Long id = messageJSONObject.getLong("id"); 
-    	String eventType = messageJSONObject.getString("event_type"); 
-    	
-    	if("add".equals(eventType) || "update".equals(eventType)) { 
-    		JSONObject dataJSONObject = JSONObject.parseObject(eshopProductService.findProductById(id));  
+    	Long id = messageJSONObject.getLong("id");
+    	String eventType = messageJSONObject.getString("event_type");
+		System.out.println("id:"+id);
+		System.out.println("event_type:"+eventType);
+
+    	if("add".equals(eventType) || "update".equals(eventType)) {
+			String result = eshopProductService.findProductById(id);
+			System.out.println("result:"+result);
+    		JSONObject dataJSONObject = JSONObject.parseObject(result);
+			System.out.println("dataJSONObject:"+dataJSONObject);
     		Jedis jedis = jedisPool.getResource();
     		jedis.set("product_" + id, dataJSONObject.toJSONString());
     	} else if ("delete".equals(eventType)) {
